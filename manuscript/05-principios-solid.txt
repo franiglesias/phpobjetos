@@ -16,7 +16,7 @@ Si eres un desarrollador único o todo-en-uno en tu empresa o proyecto puedes pe
 
 Vamos a examinarlos en detalle.
 
-# Principio de única responsabilidad
+## Principio de única responsabilidad
 
 Este principio dice que las clases deberían tener una única razón para cambiar.
 
@@ -26,7 +26,7 @@ En cualquier organización hay secciones o departamentos. Cada uno de ellos pued
 
 Si más de un agente puede solicitar cambios en una de nuestras clases, eso es que la clase tiene muchas razones para cambiar y, por lo tanto, mantiene muchas responsabilidades. En consecuencia, será necesario repartir esas responsabilidades entre clases.
 
-# Principio abierto/cerrado
+## Principio abierto/cerrado
 
 Este principio dice que una clase debe estar cerrada para modificación y abierta para extensión.
 
@@ -36,14 +36,14 @@ El principio abierto/cerrado nos dice que debemos evitar justamente eso y no toc
 
 O mejor aún diseñar las clases para que estén abiertas a la extensión o al cambio de comportamiento.
 
-# Principio de sustitución de Liskov
+## Principio de sustitución de Liskov
 
 En una jerarquía de clases, las clases base y las subclases deben poder intercambiarse sin tener que alterar el código que las utiliza.
 
 Esto no quiere decir que tengan que hacer exactamente lo mismo, sino que han de poder reemplazarse.
 
 
-# Principio de segregación de interfaces
+## Principio de segregación de interfaces
 
 El principio de segregación de interfaces puede definirse diciendo que una clase no debería verse obligada a depender de métodos o propiedades que no necesita.
 
@@ -51,7 +51,7 @@ Supongamos una clase que debe extender otra clase base. En realidad, nuestra cla
 
 Otra forma de verlo es decir que las interfaces se han de definir a partir de las necesidades de la clase cliente.
 
-# Principio de inversión de dependencia
+## Principio de inversión de dependencia
 
 [La inversión de dependencias no es sólo lo que tú piensas](http://blog.koalite.com/2015/04/la-inversion-de-dependencias-no-es-solo-lo-que-tu-piensas/)
 
