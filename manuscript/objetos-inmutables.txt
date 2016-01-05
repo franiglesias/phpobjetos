@@ -2,17 +2,39 @@
 
 Los objetos inmutables son objetos que se instancian con unos valores que no cambian a lo largo de su ciclo de uso.
 
-## DTO: Data Transport Objects
+## DTO: Data Transfer Objects
 
-[http://martinfowler.com/eaaCatalog/dataTransferObject.html](http://martinfowler.com/eaaCatalog/dataTransferObject.html "P of EAA: Data Transfer Object")
+[Definición de DTO de Martin Fowler](http://martinfowler.com/eaaCatalog/dataTransferObject.html "P of EAA: Data Transfer Object")
 
-Se trata de objetos simples que se utilizan para mover datos entre clases. Podrías considerarlos como el equivalente de una interfaz pero para datos. Suponen un contrato entre las clases acerca de la forma en que comparten información.
+[DTO Pattern y una herramienta para la generación de DTO](http://neverstopbuilding.com/data-transfer-object "")
 
-Los DTO no suelen tener comportamiento, aparte del necesario para inicialización y para serialización.
+Se trata de objetos simples que se utilizan para mover datos. Podrías considerarlos como el equivalente de una interfaz pero para datos. Suponen un contrato entre las clases acerca de la forma en que comparten información.
 
-En su versión más simple un DTO es un objeto con propiedades públicas y un constructor para instanciarlo y asignar los valores. Esto no es muy diferente de lo que podríamos construir con un array asociativo y es frecuente encontrar [opiniones a favor de los arrays](http://stackoverflow.com/questions/2056931/value-objects-vs-associative-arrays-in-php "Value objects vs associative arrays in PHP - Stack Overflow").
+Los DTO no suelen tener comportamiento, aparte del necesario para inicialización y para serialización. En cualquier caso no lleva lógica de negocio.
+
+En su versión más simple un DTO es un objeto con propiedades públicas y un constructor para instanciarlo y asignar los valores. Esto no es muy diferente de lo que podríamos construir con un array asociativo y es frecuente encontrar [opiniones a favor de los arrays](http://stackoverflow.com/questions/2056931/value-objects-vs-associative-arrays-in-php "Value objects vs associative arrays in PHP - Stack Overflow") basadas en su sencillez y velocidad. Sin embargo, la gran ventaja de los DTO viene de la mano del *Type Hinting*, lo cual nos permite usar los DTO como auténticos contratos sobre la transferencia de datos entre clases o partes de una aplicación, sumado a otros muchos beneficios derivados del uso de objetos.
+
+Por ejemplo, el siguiente bug puede pasar fácilmente desapercibido, asumiendo que el array tiene una clave 'name':
+
+	$data['nmae'] = 'Sample name';
+
+Mientras que el código equivalente con un DTO simple nunca funcionaría:
+
+	$data->nmae = 'Sample name';
 
 Sin embargo, el hecho de un objeto tenga propiedades que son accesibles públicamente tiene el riesgo de que podrían modificarse, de modo que una forma más explícita sería hacer privadas las propiedades del DTO y añadirle getters para recuperar cada una de ellas. Es un poco más engorroso pero de esta forma nos aseguramos de que los objetos son realmente inmutables y los valores se mantienen sea cual sea el proceso por el que tengan que pasar.
+
+### Cuando usar DTO
+
+#### Patrón objeto-parámetro
+
+Cuando un método o función necesita muchos argumentos es posible simplificar su signatura agrupando esos argumentos en uno o más objetos simples.
+
+Por ejemplo:
+
+<?php	?>
+
+#### Devolución de datos complejos
 
 ## Value Objects
 
