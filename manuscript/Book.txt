@@ -1,5 +1,5 @@
-00-intro.txt
-01-objetos.txt
-02-polimorfismo.txt
-05-principios-solid.txt
-objetos-inmutables.txt
+00-intro.md
+01-objetos.md
+02-polimorfismo.md
+05-principios-solid.md
+objetos-inmutables.md

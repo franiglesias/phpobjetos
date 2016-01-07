@@ -8,7 +8,7 @@ Los objetos inmutables son objetos que se instancian con unos valores que no cam
 
 [DTO Pattern y una herramienta para la generación de DTO](http://neverstopbuilding.com/data-transfer-object "")
 
-Se trata de objetos simples que se utilizan para mover datos. Podrías considerarlos como el equivalente de una interfaz pero para datos. Suponen un contrato entre las clases acerca de la forma en que comparten información.
+Se trata de objetos simples que se utilizan para mover datos entre procesos o clases. Podrías considerarlos como el equivalente de una interfaz pero para datos. Suponen un contrato entre las clases acerca de la forma en que comparten información.
 
 Los DTO no suelen tener comportamiento, aparte del necesario para inicialización y para serialización. En cualquier caso no lleva lógica de negocio.
 
