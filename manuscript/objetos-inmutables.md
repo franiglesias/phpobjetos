@@ -34,7 +34,9 @@ Por ejemplo:
 
 <?php	?>
 
-#### Devolución de datos complejos
+#### Devolución de datos múltiples de un método
+
+PHP, como otros lenguajes, sólo permite un único valor de vuelta de un método. Si necesitamos devolver más, podemos componer un DTO.
 
 ## Value Objects
 
