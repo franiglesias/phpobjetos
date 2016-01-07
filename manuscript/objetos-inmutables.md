@@ -16,11 +16,11 @@ En su versión más simple un DTO es un objeto con propiedades públicas y un co
 
 Por ejemplo, el siguiente bug puede pasar fácilmente desapercibido, asumiendo que el array tiene una clave 'name':
 
-	$data['nmae'] = 'Sample name';
+	$name = $data['nmae'];
 
 Mientras que el código equivalente con un DTO simple nunca funcionaría:
 
-	$data->nmae = 'Sample name';
+	$name = data->nmae;
 
 Sin embargo, el hecho de un objeto tenga propiedades que son accesibles públicamente tiene el riesgo de que podrían modificarse, de modo que una forma más explícita sería hacer privadas las propiedades del DTO y añadirle getters para recuperar cada una de ellas. Es un poco más engorroso pero de esta forma nos aseguramos de que los objetos son realmente inmutables y los valores se mantienen sea cual sea el proceso por el que tengan que pasar.
 
