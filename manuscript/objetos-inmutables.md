@@ -6,7 +6,7 @@ Los objetos inmutables son objetos que se instancian con unos valores que no cam
 
 [Definición de DTO de Martin Fowler](http://martinfowler.com/eaaCatalog/dataTransferObject.html "P of EAA: Data Transfer Object")
 
-[DTO Pattern y una herramienta para la generación de DTO](http://neverstopbuilding.com/data-transfer-object "")
+[DTO Pattern y una herramienta para la generación de DTO](http://neverstopbuilding.com/data-transfer-object "DTO")
 
 Se trata de objetos simples que se utilizan para mover datos entre procesos o clases. Podrías considerarlos como el equivalente de una interfaz pero para datos. Suponen un contrato entre las clases acerca de la forma en que comparten información.
 
@@ -28,11 +28,21 @@ Sin embargo, el hecho de un objeto tenga propiedades que son accesibles pública
 
 #### Patrón objeto-parámetro
 
-Cuando un método o función necesita muchos argumentos es posible simplificar su signatura agrupando esos argumentos en uno o más objetos simples.
+Cuando un método o función necesita muchos argumentos es posible simplificar su signatura agrupando esos argumentos en uno o más objetos simples, que bien pueden ser DTO.
 
-Por ejemplo:
+Observa el siguiente código:
 
-<?php	?>
+<<(code/dto-sample-1.php)
+
+En este ejemplo, la clase User tiene que llevar la cuenta de los detalles de la dirección postal del usuario, lo que lleva como consecuencia que, entre otras cosas, debe ocuparse de validar la dirección. Pero esa no debería ser su tarea (Principio de Responsabilidad Única), sino que los datos de dirección deberían venir validados pero: ¿cuándo sucedería esa validación?
+
+Ahora compara con este otro código:
+
+<<(code/dto-sample-2.php)
+
+En este ejemplo usamos un DTO para contener los datos de la dirección y hacemos que el DTO contenga el código para validarlos (aunque no lo hemos escrito en el ejemplo). Gracias a eso, siempre que inicializamos un objeto de tipo AddressDTO será válido, por lo que User puede aceptarlo sin tener que hacer nada.
+
+De este modo el código de User resulta mucho más legible y la clase sólo se ocupa de lo que tiene que ocuparse.
 
 #### Devolución de datos múltiples de un método
 
