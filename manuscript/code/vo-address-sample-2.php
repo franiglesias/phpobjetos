@@ -1,6 +1,6 @@
 <?php
 
-class AddressDTO {
+class Address {
 	
 	private $street;
 	private $extra;
@@ -28,7 +28,7 @@ class User
 	
 	// More stuff
 	
-	function setAddress(AddressDTO $address)
+	function setAddress(Address $address)
 	{
 		$this->address = $address;
 	}

@@ -32,27 +32,26 @@ Cuando un método o función necesita muchos argumentos es posible simplificar s
 
 Observa el siguiente código:
 
-<<(code/dto-sample-1.php)
+<<(code/dto-example-database.php)
 
-En este ejemplo, la clase User tiene que llevar la cuenta de los detalles de la dirección postal del usuario, lo que lleva como consecuencia que, entre otras cosas, debe ocuparse de validar la dirección. Pero esa no debería ser su tarea (Principio de Responsabilidad Única), sino que los datos de dirección deberían venir validados pero: ¿cuándo sucedería esa validación?
+En este ejemplo, la clase DBConnector tiene que llevar la cuenta de los detalles de la conexión, lo que lleva como consecuencia que, entre otras cosas, debe ocuparse de validarlos. Pero esa no debería ser su tarea (Principio de Responsabilidad Única), sino que los datos de conexión deberían venir validados, pero: ¿dónde y cuándo sucedería esa validación?
 
 Ahora compara con este otro código:
 
-<<(code/dto-sample-2.php)
+<<(code/dto-example-database-dto.php)
 
-En este ejemplo usamos un DTO para contener los datos de la dirección y hacemos que el DTO contenga el código para validarlos (aunque no lo hemos escrito en el ejemplo). Gracias a eso, siempre que inicializamos un objeto de tipo AddressDTO será válido, por lo que User puede aceptarlo sin tener que hacer nada.
+En este ejemplo usamos un DTO para contener los datos de conexión y hacemos que el DTO contenga el código para validarlos (aunque no lo hemos escrito en el ejemplo). Gracias a eso, siempre que inicializamos un objeto de tipo DBSettings será válido, por lo que DBConnector puede aceptarlo sin tener que hacer nada más.
 
-De este modo el código de User resulta mucho más legible y la clase sólo se ocupa de lo que tiene que ocuparse.
 
 #### Devolución de datos múltiples de un método
 
-PHP, como otros lenguajes, sólo permite un único valor de vuelta de un método. Si necesitamos devolver más, podemos componer un DTO.
+PHP, como otros lenguajes, sólo permite un único valor de vuelta de un método. Si necesitamos devolver más, podemos componer un DTO. Volvemos a lo mismo: podría hacerse con un array asociativo, pero el DTO nos permite forzar restricciones que se controlan por el propio
 
 ## Value Objects
 
-El concepto viene del DDD se refiere a objetos que representan valores importantes para el dominio, su igualdad viene dada por la igualdad de sus propiedades.
+El concepto viene del DDD y se refiere a objetos que representan valores importantes para el dominio, su igualdad viene dada por la igualdad de sus propiedades.
 
-Los Value Objects tienen comportamientos.
+Los Value Objects tienen comportamientos, pero no tienen identidad ni un ciclo de vida.
 
 El ejemplo clásico de Value Object es el dinero (Money), que usamos en precios, salarios, etc. Habitualmente modelamos los valores del dinero con números de coma flotante, pero el valor no es suficiente. El dinero es el valor y la moneda que se esté utilizando: no es lo mismo 10 dólares que 10 euros. Puede argumentarse que en muchas aplicaciones no es necesario tener en cuenta la moneda, pero si algún día en el futuro eso cambiase, el impacto en el código podría ser enorme.
 
