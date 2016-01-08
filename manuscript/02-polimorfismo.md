@@ -12,21 +12,19 @@ Algunos autores sobre Programación Orientada a Objetos dicen que cuando hacemos
 
 Siguiendo con nuestro ejemplo de la biblioteca, supongamos que tenemos las clases Book y Review y que ambas definen el método `lend()` para indicar que son prestadas. Entonces es posible escribir un código similar a éste:
 
-~~~~~~~~
-<?php 
+	<?php 
 
-$objects  =
-    array(
-        new Book('Programar en PHP', 'Pepe Pérez'),
-        new Review('PHP monthly review', 'Springer', 'May 2014')
-    );
+	$objects  =
+	    array(
+	        new Book('Programar en PHP', 'Pepe Pérez'),
+	        new Review('PHP monthly review', 'Springer', 'May 2014')
+	    );
     
-foreach($objects as $theObject) {
-    $theObject->lend();
-}
+	foreach($objects as $theObject) {
+	    $theObject->lend();
+	}
 
-?>
-~~~~~~~~
+	?>
 
 Sencillamente, tenemos una lista de objetos que quire retirar un lector. Vamos recorriendo la colección uno por uno invocando el método `lend`, y no tenemos que comprobar su tipo, simplemente les decimos que "sean prestados". Aunque los objetos son distintos ambos pueden responder al mismo mensaje.
 
@@ -74,3 +72,40 @@ Con todo, las jerarquías de clases no deberían ser muy largas o profundas.
 
 Por otro lado, las jerarquías de clases deberían cumplir el principio de sustitución de Liskov, que es uno de los principios SOLID, y que dice que las clases de una jerarquía deberían ser intercambiables.
 
+## Interfaces
+
+La herencia como forma de extender objetos tiene varios problemas y limitaciones. Al prinicpio parece una prestación espectacular, pero intentar resolver todas las necesidades de polimorfismo con Herencia nos lleva a meternos en muchos líos.
+
+Por ejemplo, podemos empezar a desear que una clase pueda heredar de varias otras simultáneamente. O también podríamos querer que una clase descienda de otra determinada sólo para poder pasarla a un método y que supere el type hinting. Este uso de la herencia acaba violando varios de los principios SOLID, en especial el de Liskov y el de segregación de interfaces.
+
+Para lograr eso respetando los principios SOLID tenemos las interfaces.
+
+Las interfaces son declaraciones similares a las clases que sólo contienen signaturas de métodos públicos, sin ningún código ni propiedades, aunque pueden definir constantes. Las clases que implementan la interfaz se comprometen a implementar esos métodos respetando la signatura definida. En otras palabras: es un contrato de obligado cumplimiento.
+
+Una clase puede implementar varias interfaces, lo que respondería a esa necesidad de la herencia múltiple. Y, por otra parte, dos o más clases pueden implementar la misma interfaz aunque no tengan ninguna otra relación semántica entre ellas.
+
+Por ejemplo, podríamos tener una interfaz para clases que puedan escribir en un log.
+
+<<(code/interface-loggable.php)
+
+Todas las clases que quieran ser `Loggable` deberán implementar un método `log` que espera un parámetro `$message` y un método `write` que escribirá los mensajes existentes en un archivo. El archivo de log concreto en que se escribe es cosa de cada clase, pero al definirlo así las clases están obligados a implementar los métodos cada una según sus necesidades. A la vez, podemos ver que no hay otra vinculación entre las clases, que pueden evolucionar de forma completamente independiente.
+
+Es más, en unos casos el objeto podría escribir el mensaje a un archivo, otro objeto podría enviar un email y otro objeto escribir en una base de datos. Sencillamente la interfaz declara que los objetos de tipo `Loggable` deben poder tomar nota de un mensaje (método `log`) y deben poder "escribirlo" posteriormente de acuerdo a sus propios propósitos o necesidades (método `write`).
+
+Para indicar que una clase implementa una interfaz la declaramos asi:
+
+	class Example implemente Interface {}
+	
+	class Emailer implements Loggable {}
+	
+Si se implementan varias interfaces ser haría así, por ejemplo, para que la clase Emailer implemente dos hipotéticas interfaces Loggable y Service:
+
+	class Emailer implements Loggable, Service {}
+
+Por otra parte, en el código de ejemplo tenemos una clase `Logger` que puede registrar objetos de tipo `Loggable` y que se encargará de actualizar los logs en una sola pasada. Para ello, sabe que los objetos registrados tendrán un método `write()` para escribir sus mensajes, sin preocuparse para nada de cuántos mensajes o de qué archivo concreto debe ser modificado. De este modo, podemos registrar tantos objetos `Loggable` como nuestra aplicación necesite. 
+
+Puesto que `Logger` no tiene que preocuparse de la manera concreta en que los objetos `Loggable` registrados realizan el método `write` resulta que en una única llamada podemos tener escrituras en diferentes archivos de logs, a la vez que otros envían un email a un administrador y otros lo registran en una tabla de una base de datos.
+
+En el ejemplo se puede ver que hay una duplicación de código entre las clases que implementan Loggable (es casi el mismo código) y eso podría hacernos plantear la pregunta: ¿y no podemos hacer lo mismo con herencia?. Sí y no. Bien, si estas clases se utilizasen en un proyecto real no sería difícil darse cuenta que tienen poco que ver una con la otra: una de ellas sería una clase para enviar emails y la otra para conectarse a una base de datos. Seguramente nos interesa que ambas tengan la capacidad de escribir logs para poder hacer un seguimiento de su actividad y detectar fallos, pero es no es motivo para que ambas hereden de una superclase "Loggable". Por eso usamos interfaces, aunque supongan escribir el código aparentemente común.
+
+Las últimas versiones de PHP dan soporte a traits, que son una forma de reutilizar código entre diferentes clases. Un trait nos permite definir métodos y propiedades que luego podríamos utilizar en diferentes clases. Sin embargo, no debemos confundir eso con la idea de las interfaces. EL hecho de que dos clases, como en el ejemplo, tengan algún método idéntico nos permitiría utilizar un trait para no duplicar código (el método `log` es un claro candidato en el ejemplo), pero ambas siguen teniendo que implementar la misma interfaz para beneficiarnos del polimorfismo.

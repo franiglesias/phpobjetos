@@ -8,7 +8,7 @@ class DBConnector {
 	private $password;
 	private $database;
 	
-	public function __construct($host, $port, $user, $password, $database = null)
+	public function connect($host, $port, $user, $password, $database = null)
 	{
 		// Validation stuff
 		$this->host = $host;
@@ -16,10 +16,7 @@ class DBConnector {
 		$this->user = $user;
 		$this->password = $password;
 		$this->database = $database;
-	}
-	
-	public function connect()
-	{
+		
 		// Connection stuff
 	}
 }

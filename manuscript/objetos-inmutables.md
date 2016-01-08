@@ -45,13 +45,13 @@ En este ejemplo usamos un DTO para contener los datos de conexión y hacemos que
 
 #### Devolución de datos múltiples de un método
 
-PHP, como otros lenguajes, sólo permite un único valor de vuelta de un método. Si necesitamos devolver más, podemos componer un DTO. Volvemos a lo mismo: podría hacerse con un array asociativo, pero el DTO nos permite forzar restricciones que se controlan por el propio
+PHP, como otros lenguajes, sólo permite un único valor de vuelta de un método. Si necesitamos devolver más, podemos componer un DTO. Volvemos a lo mismo: podría hacerse con un array asociativo, pero el DTO nos permite forzar restricciones que se controlan por el propio intérprete de PHP y lanzan errores o excepciones.
 
 ## Value Objects
 
 El concepto viene del DDD y se refiere a objetos que representan valores importantes para el dominio, su igualdad viene dada por la igualdad de sus propiedades.
 
-Los Value Objects tienen comportamientos, pero no tienen identidad ni un ciclo de vida.
+Los Value Objects tienen comportamientos. No tienen identidad ni un ciclo de vida. 
 
 El ejemplo clásico de Value Object es el dinero (Money), que usamos en precios, salarios, etc. Habitualmente modelamos los valores del dinero con números de coma flotante, pero el valor no es suficiente. El dinero es el valor y la moneda que se esté utilizando: no es lo mismo 10 dólares que 10 euros. Puede argumentarse que en muchas aplicaciones no es necesario tener en cuenta la moneda, pero si algún día en el futuro eso cambiase, el impacto en el código podría ser enorme.
 
@@ -78,4 +78,17 @@ Aunque un objeto sea inmutable, puede tener métodos que se basen en sus propied
 
 <<(code/money.php)
 
+Usamos Value Objects cuando necesitamos representar valores:
+
+* No se pueden representar con un tipo básico del sistema.
+* Son complejos y agrupan varios datos de tipo simple que van junos.
+* Requieren una validación específica.
+
+Por ejemplo, el dinero (y con él, precios, salarios, etc) puede representarse con un valor de coma flotante, pero en cuanto necesitamos gestionar la moneda se introduce un segundo dato. Encapsulamos ambos para manejarlos de manera conjunta.
+
+Otro ejemplo típico es una dirección postal, se trata de varios datos string que van juntos para componer una dirección. Encapsulados en un Value Object son más fáciles de manejar.
+
+Un ejemplo más sutil es el email. Una dirección de email puede representarse con un string, pero encapsulándolo en un Value Object podemos introducir las reglas de validación (email bien formado) en el constructor, asegurándonos de que todos los objetos email que manejemos sean válidos. Eso quizá no nos asegura que los emails sean reales, pero sí nos garantiza que están bien formados.
+
+<<(code/email.php)
 

@@ -13,13 +13,13 @@ class Money {
 		return $this->amount;
 	}
 	
-	public function incrementBy($pct) {
+	public function incrementByPercentage($pct) {
 		return new Money($this->amount*(1+$pct), $this->currency);
 	}
 }
 
 $price = new Money(100, 'EUR');
-$newPrice = $price->incrementBy(.10);
+$newPrice = $price->incrementByPercentage(.10);
 echo $newPrice->getAmount();
 
 ?>
