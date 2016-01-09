@@ -4,11 +4,9 @@ Los objetos inmutables son objetos que se instancian con unos valores que no cam
 
 ## DTO: Data Transfer Objects
 
-[Definición de DTO de Martin Fowler](http://martinfowler.com/eaaCatalog/dataTransferObject.html "P of EAA: Data Transfer Object")
+Se trata de objetos simples que se utilizan para mover datos entre procesos agrupando varias llamadas en una sola ([Fowler](http://martinfowler.com/eaaCatalog/dataTransferObject.html "P of EAA: Data Transfer Object")). [Otra definición](http://neverstopbuilding.com/data-transfer-object "DTO") los considera como contenedores ligeros y serializables para distribuir datos desde una capa de servicio.
 
-[DTO Pattern y una herramienta para la generación de DTO](http://neverstopbuilding.com/data-transfer-object "DTO")
-
-Se trata de objetos simples que se utilizan para mover datos entre procesos o clases. Podrías considerarlos como el equivalente de una interfaz pero para datos. Suponen un contrato entre las clases acerca de la forma en que comparten información.
+Podrías considerarlos como el equivalente de una interfaz pero para datos. Suponen un contrato entre las partes acerca de la forma en que comparten información.
 
 Los DTO no suelen tener comportamiento, aparte del necesario para inicialización y para serialización. En cualquier caso no lleva lógica de negocio.
 
