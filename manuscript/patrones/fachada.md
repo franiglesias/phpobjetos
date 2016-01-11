@@ -1,4 +1,4 @@
-# El patrón Fachada (Facade)
+## El patrón Fachada (Facade)
 
 El patrón Fachada es un patrón de tipo estructural que persigue encapsular operaciones complejas o repetitivas en una interfaz simplificada. El patrón Fachada ayuda a lograr DRY y KISS.
 
