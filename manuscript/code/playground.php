@@ -1,114 +1,99 @@
 <?php
 
-/**
- * A Domain Model class. It composes Group,
- * which in turn may compose other objects which may compose other ones,
- * to the point that serializing an user involves the entire state of the application.
- *
- * ORMs usually break the reconstitution of the whole object graph by putting
- * lazy-loading proxies on the boundaries of the needed subgraph.
- */
-class User 
-{
-    private $_name;
-    private $_groups = array();
+abstract class AbstractPageBuilder {
+    abstract function getPage();
+}
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->_name;
+abstract class AbstractPageDirector {
+    abstract function __construct(AbstractPageBuilder $builder_in);
+    abstract function buildPage();
+    abstract function getPage();
+}
+
+class HTMLPage {
+    private $page = NULL;
+    private $page_title = NULL;
+    private $page_heading = NULL;
+    private $page_text = NULL;
+    function __construct() {
     }
-
-    public function setName($name)
-    {
-        $this->_name = $name;
+    function showPage() {
+      return $this->page;
     }
-
-    /**
-     * @return string
-     */
-    public function getRole()
-    {
-        return $this->_role;
+    function setTitle($title_in) {
+      $this->page_title = $title_in;
     }
-
-    public function setRole($role)
-    {
-        $this->_role = $role;
+    function setHeading($heading_in) {
+      $this->page_heading = $heading_in;
     }
-
-    public function addGroup(Group $group)
-    {
-        $this->_group = $group;
+    function setText($text_in) {
+      $this->page_text .= $text_in;
     }
-
-    public function getGroups()
-    {
-        return $this->_groups;
+    function formatPage() {
+       $this->page  = '<html>';
+       $this->page .= '<head><title>'.$this->page_title.'</title></head>';
+       $this->page .= '<body>';
+       $this->page .= '<h1>'.$this->page_heading.'</h1>';
+       $this->page .= $this->page_text;
+       $this->page .= '</body>';
+       $this->page .= '</html>';
     }
 }
 
-/**
- * Another Domain Model class.
- */
-class Group
-{
-    private $_name;
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->_name;
+class HTMLPageBuilder extends AbstractPageBuilder {
+    private $page = NULL;
+    function __construct() {
+      $this->page = new HTMLPage();
     }
-
-    public function setName($name)
-    {
-        $this->_name = $name;
+    function setTitle($title_in) {
+      $this->page->setTitle($title_in);
+    }
+    function setHeading($heading_in) {
+      $this->page->setHeading($heading_in);
+    }
+    function setText($text_in) {
+      $this->page->setText($text_in);
+    }
+    function formatPage() {
+      $this->page->formatPage();
+    }
+    function getPage() {
+      return $this->page;
     }
 }
 
-/**
- * The Data Transfer Object for User.
- * It stores the mandatory data for a particular use case - for example ignoring the groups,
- * and ensuring easy serialization.
- */
-class UserDTO
-{
-    /**
-     * In more complex implementations, the population of the DTO can be the responsibilty
-     * of an Assembler object, which would also break any dependency between User and UserDTO.
-     */
-    public function __construct(User $user)
-    {
-        $this->_name = $user->getName();
-        $this->_role = $user->getRole();
+class HTMLPageDirector extends AbstractPageDirector {
+    private $builder = NULL;
+    public function __construct(AbstractPageBuilder $builder_in) {
+         $this->builder = $builder_in;
     }
-
-    public function getName()
-    {
-        return $this->_name;
+    public function buildPage() {
+      $this->builder->setTitle('Testing the HTMLPage');
+      $this->builder->setHeading('Testing the HTMLPage');
+      $this->builder->setText('Testing, testing, testing!');
+      $this->builder->setText('Testing, testing, testing, or!');
+      $this->builder->setText('Testing, testing, testing, more!');
+      $this->builder->formatPage();
     }
-
-    public function getRole()
-    {
-        return $this->_role;
+    public function getPage() {
+      return $this->builder->getPage();
     }
-    
-    // there are no setters because this use cases does not require modification of data
-    // however, in general DTOs do not need to be immutable.
 }
 
-// client code
-$user = new User();
-$user->setName('Giorgio');
-$user->setRole('Author');
-$user->addGroup(new Group('Authors'));
-$user->addGroup(new Group('Editors'));
-// many more groups
-$dto = new UserDTO($user);
-// this value is what will be stored in the session, or in a cache...
-var_dump(serialize($dto));
+  writeln('BEGIN TESTING BUILDER PATTERN');
+  writeln('');
+
+  $pageBuilder = new HTMLPageBuilder();
+  $pageDirector = new HTMLPageDirector($pageBuilder);
+  $pageDirector->buildPage();
+  $page = $pageDirector->GetPage();
+  writeln($page->showPage());
+  writeln('');
+ 
+  writeln('END TESTING BUILDER PATTERN');
+
+  function writeln($line_in) {
+    echo $line_in."<br/>";
+  }
+
+?>
