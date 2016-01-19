@@ -5,3 +5,5 @@
 objetos-inmutables.md
 patrones/patrones.md
 patrones/fachada.md
+patrones/repositorio.md
+patrones/especificacion.md
