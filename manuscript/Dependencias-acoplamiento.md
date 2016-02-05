@@ -26,3 +26,22 @@ Para lidiar con este problema tienes una solucón fácil y que es aplicar el pat
 <<(code/dependencies-sample-2.php)
 
 Así de simple. Se trata de cargar la dependencia a través del constructor (o de un Setter). Ahora la dependencia es visible. Todavía hay un alto acoplamiento, pero ya empezamos a tener más libertad pues sabemos cómo se relacionan ambas clases.
+
+## Inversión de dependencias
+
+El principio de Inversión de Dependencias nos dice que:
+
+* Los módulos de alto nivel no deben depender de módulos de bajo nivel. Ambos deben depender de abstracciones.
+* Las abstracciones no deben depender de detalles, son los detalles los que deben depender de abstracciones.
+
+En resumen: cualquier dependencia debe ser sobre abastracciones, no sobre implementraciones concretas.
+
+En nuestro ejemplo, la dependencia es ahora explícita, lo que es bueno, pero Cliente depende de una implementación concreta de Servicio, lo que es malo.
+
+Para invertir la dependencia debemos hacer lo siguiente:
+
+Cliente no debe esperar una instancia concreta de Servicio, sino que debe esperar una clase que cumpla ciertas condiciones, o lo que es lo mismo, que respete un contrato. Y, como hemos visto, un contrato en programación es una interfaz. Y una interfaz es lo más abstracto de lo que podemos disponer en software.
+
+Servicio, por su parte, debe respetar la interfaz para poder ser usada por Cliente, o sea, también debe depender de esa abstracción.
+
+Así que necesitamos crear una interfaz
