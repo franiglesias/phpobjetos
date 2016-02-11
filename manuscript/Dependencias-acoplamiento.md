@@ -95,7 +95,7 @@ Otra solución es lo que se llama un Contenedor de Inyección de Dependencias (D
 
 El acoplamiento debemos considerarlo en el contexto del comportamiento de la clase Cliente. Ésta utiliza un comportamiento de la clase Servidor para poder llevar a cabo su propio comportamiento.
 
-Esto no se cumple en ciertos casos. Por ejemplo, cuando hablamos de Value Objects, éstos no contribyuen al comportamiento de la clase usuaria del mismo modo. Los Value Objects se utilizan como si fuesen tipos primitivos del lenguaje y su comportamiento está destinado proporcionar servicios a la clase protegiendo sus propias invariantes. Los Value Objects son inmutables y además no tienen dependencias externas o, si las tienen, son de otros ValueObjects. Por lo tanto son objetos que pueden ser instanciados sin más con new o con un constructor estático con estático si lo hemos diseñado así.
+Esto no se cumple en ciertos casos. Por ejemplo, cuando hablamos de Value Objects, éstos no contribyuen al comportamiento de la clase usuaria del mismo modo. Los Value Objects se utilizan como si fuesen tipos primitivos del lenguaje y su comportamiento está destinado proporcionar servicios a la clase protegiendo sus propias invariantes. Los Value Objects son inmutables y además no tienen dependencias externas o, si las tienen, son de otros ValueObjects. Por lo tanto son objetos que pueden ser instanciados sin más con `new` o con un constructor estático con estático si lo hemos diseñado así.
 
 Así que podemos distinguir entre objetos "newables" y objetos "inyectables". [Miško Hevery lo explica muy bien](http://misko.hevery.com/2008/09/30/to-new-or-not-to-new/ "To &#8220;new&#8221; or not to &#8220;new&#8221;&#8230;"). En resumen:
 
