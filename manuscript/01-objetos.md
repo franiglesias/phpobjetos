@@ -246,9 +246,9 @@ Volviendo al método, simplemente le pasamos los parámetros `$title` y `$author
 
 	?>
 
-Aparte de cambiar el nombre de los parámetros, hemos utilizado `new` para instanciar el objeto `$aBook`, que es de la clase Book. Para instanciar más objetos, o sea para tener más libros, usaríamos new pasándole los datos de los nuevos libros.
+Aparte de cambiar el nombre de los parámetros, hemos utilizado `new` para instanciar el objeto `$aBook`, que es de la clase Book. Para instanciar más objetos, o sea para tener más libros, usaríamos `new` pasándole los datos de los nuevos libros.
 
-## Obetener el valor de propiedades privadas: getters
+## Obtener el valor de propiedades privadas: getters
 
 Ahora que nuestro libro ya puede tener título y autor se nos plantea el problema de acceder a esos valores. Es decir, hemos aprendido a asignar valores a las propiedades durante la construcción del objeto, pero ¿cómo accedo a esos valores si necesito consultarlos más adelante?
 

@@ -90,3 +90,4 @@ Un ejemplo más sutil es el email. Una dirección de email puede representarse c
 
 <<(code/email.php)
 
+http://culttt.com/2014/04/30/difference-entities-value-objects/
