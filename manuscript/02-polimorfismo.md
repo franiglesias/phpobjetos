@@ -1,30 +1,43 @@
 # Polimorfismo y extensibilidad de objetos
 
-En Programación Orientada a Objetos el **polimorfismo** es una característica que nos permite enviar el mismo mensaje, desde el punto de vista sintáctico, a distintos objetos para que cada uno de ellos lo realice con un comportamiento específico.
+En Programación Orientada a Objetos el **polimorfismo** es una característica que nos permite enviar el mismo mensaje, desde el punto de vista sintáctico, a distintos objetos para que cada uno de ellos lo realice con un comportamiento específico. Cuando decimos "enviar un mensaje" nos estamos refiriendo a ejecutar uno de sus métodos.
 
-En la práctica, eso signfica que si disponemos de varios objetos que tienen un mismo método con la misma signatura podemos usar el mismo código para invocarlos, sin necesidad de preguntarles por su clase previamente.
+```php
+$object = new Class();
 
-El ejemplo clásico es el de un programa de dibujo en el que se manejan distintos tipos de formas. Cada forma se define mediante una clase con un método para dibujarla (por ejemplo, `draw`) que cada una ejecuta de distinta manera. Se recorre la lista de objetos activos y se va pidiendo a cada uno que se dibuje sin que tengamos que preocuparnos de saber de antemando de qué clase es.
+$object->doSomething();
+```
 
-Otro ejemplo: todos los empleados de una empresa son de la clase "Emppleados", pero pueden desempeñar distintos puestos, que definen responsabilidades, salarios, beneficions, etc. Cuando les pedimos que "trabajen" cada uno hace lo que le corresponde.
+En la práctica, eso significa que si disponemos de varios objetos que tienen un mismo método con una misma signatura podemos usar el mismo código para invocarlos, sin necesidad de preguntarles por su clase previamente.
+
+El ejemplo clásico es el de un programa de dibujo en el que se manejan distintos tipos de formas. Cada forma se define mediante una clase que tiene un método para dibujarla (por ejemplo, `draw`) y que cada una ejecuta de distinta manera. Se recorre la lista de objetos activos y se va pidiendo a cada uno que se dibuje sin que tengamos que preocuparnos de saber de antemano de qué clase es.
+
+```php
+$square = new Square(100);
+$circle = new Circle(150);
+
+$square->draw();
+$circle->draw();
+```
+
+Otro ejemplo: todos los empleados de una empresa son de la clase "Empleados", pero pueden desempeñar distintos puestos, que definen responsabilidades, salarios, beneficios, etc. Cuando les pedimos que "trabajen" cada uno hace lo que le corresponde.
 
 Algunos autores sobre Programación Orientada a Objetos dicen que cuando hacemos una llamada a un método de un objeto le enviamos un mensaje para que se ponga a ejecutar alguna tarea, de ahí nuestra primera definición. Al decir que es el mismo mensaje desde el punto de vista sintáctico queremos decir que es una llamada a métodos con el mismo nombre que cada objeto puede interpretar de manera más o menos diferente (punto de vista semántico).
 
 Siguiendo con nuestro ejemplo de la biblioteca, supongamos que tenemos las clases Book y Review y que ambas definen el método `lend()` para indicar que son prestadas. Entonces es posible escribir un código similar a éste:
 
-	<?php 
+```php
+<?php 
 
-	$objects  =
-	    array(
-	        new Book('Programar en PHP', 'Pepe Pérez'),
-	        new Review('PHP monthly review', 'Springer', 'May 2014')
-	    );
+$objects = [
+    new Book('Programar en PHP', 'Pepe Pérez'),
+    new Review('PHP monthly review', 'Springer', 'May 2014')
+];
     
-	foreach($objects as $theObject) {
-	    $theObject->lend();
-	}
-
-	?>
+foreach($objects as $theObject) {
+    $theObject->lend();
+}
+```
 
 Sencillamente, tenemos una lista de objetos que quire retirar un lector. Vamos recorriendo la colección uno por uno invocando el método `lend`, y no tenemos que comprobar su tipo, simplemente les decimos que "sean prestados". Aunque los objetos son distintos ambos pueden responder al mismo mensaje.
 
@@ -40,29 +53,90 @@ Por esa razón, el polimorfismo en los lenguajes de tipado estricto resulta espe
 
 Por otro lado, en los lenguajes de tipado estricto también deben declararse los tipos de los argumentos de las funciones y, consecuentemente, los tipos de los argumentos de los métodos. Esto es muy bueno, porque nos proporciona un primer medio de control de que los datos que se pasan son válidos. Si intentamos pasar un argumento de un tipo no indicado para la función el intérprete o compilador nos lanzará un error.
 
-Precisamente, PHP ha incorporado esa caracterísica, denominada *Type Hinting* en las llamadas a funciones y métodos pero sólo para objetos y, gracias a ello, podemos declarar el tipo de objeto que pasamos como argumento a una función o método. Su uso no es obligatorio, pero como beneficio directo tenemos esa primera línea de validación de datos que, más adelante, veremos como explotar a fondo.
+Precisamente, PHP ha incorporado esa característica, denominada *Type Hinting* en las llamadas a funciones y métodos pero sólo para objetos y, gracias a ello, podemos declarar el tipo de objeto que pasamos como argumento a una función o método. Su uso no es obligatorio, pero como beneficio directo tenemos esa primera línea de validación de datos que, más adelante, veremos como explotar a fondo.
 
 Sin embargo, ¿cómo es posible que el tipado fuerte o, en su caso, el type hinting permitan el polimorfismo?
 
 Pues a través de mecanismos que permiten que una clase pueda responder como si, de hecho, fuese de varios tipos simultáneamente. Estos mecanismos son la herencia y las interfaces.
 
-A través de la **herencia** podemos derivar unas clases a partir de otras, de modo que las clases "hijas" también son del mismo tipo que sus clases padres y, de hecho, que todos sus ascendientes.
-
-Las **interfaces** nos permiten que las clases "se comprometan" a cumplir ciertas condiciones asumiendo ser del tipo definido por la interfaz. Es habitual referirse a esto como un contrato. El cumplimiento del mismo es asegurado por el intérprete de PHP que lanza un error si la clase no implementa correctamente la interfaz.
+* A través de la **herencia** podemos derivar unas clases a partir de otras, de modo que las clases "hijas" también son del mismo tipo que sus clases padres y, de hecho, que todos sus ascendientes.
+* Las **interfaces** nos permiten que las clases "se comprometan" a cumplir ciertas condiciones asumiendo ser del tipo definido por la interfaz. Es habitual referirse a esto como un contrato. El cumplimiento del mismo es asegurado por el intérprete de PHP que lanza un error si la clase no implementa correctamente la interfaz.
 
 En ambos casos nos queda garantizado que los objetos instanciados serán capaces de responder a ciertos métodos, que es lo que nos interesa desde el punto de vista del código cliente, aparte de respetar la integridad del sistema de tipado.
 
-En el caso de la herencia, se consigue por el hecho de que las clases bases ya ofrecen esos métodos incluso aunque no estén definidos en las clases hijas. En el caso de las interfaces, el contrato obliga a las clases a implementar esos métodos. El resultado es que el código cliente puede confiar en que puede esperar ciertos comportamientos de los objetos que utiliza.
+En el caso de la herencia, se consigue por el hecho de que las clases bases ya ofrecen esos métodos incluso aunque no estén definidos en las clases hijas. En el caso de las interfaces, el contrato obliga a las clases a implementar esos métodos. El resultado es que el código cliente puede confiar en la existencia de ciertos comportamientos de los objetos que utiliza.
 
 ## Herencia
 
 La herencia es un mecanismo para crear clases extendiendo otras clases base. La nueva clase hereda los métodos y propiedades de la clase base a la que extiende, así que ya cuenta con una funcionalidad de serie.
 
+Supongamos una clase `Vehicle`:
+
+```php
+
+class Vehicle
+{
+    protected $speed = 0;
+    protected $maxSpeed = 120;
+    
+    public function accelerate()
+    {
+        if ($this->speed < $this->maxSpeed) {
+            $this->speed++;
+        }
+    }
+    
+    public function deccelerate()
+    {
+        if ($this->speed > 0) {
+            $this->speed--;
+        } 
+    }
+}
+```
+
+Y, a continuación, imaginemos una clase `Car` que extiende de la clase 'Vehicle':
+
+```php
+class Car extends Vehicle
+{
+}
+```
+
+Todos los objetos de la clase `Car` tienen la funcionalidad de la clase `Vehicle`. Se puede decir que todos los `Car` son `Vehicles`.
+
+No necesito escribir código en `Car` para que lo anterior se cumpla.
+
 Normalmente utilizaremos la herencia para crear especializaciones de una clase más general. Es decir, no extendemos una clase para conseguir que la nueva contenga métodos de la clase extendida, sino que lo hacemos porque la nueva clase es semánticamente equivalente a la clase base pero más específica o concreta. Por ejemplo, podemos tener una clase que gestiona la conexión genérica a una base de datos y extenderla con varias clases hijas para manejar drivers específicos (MySQL, SQLite, Postgre, MongoDB, etc.).
 
-La nueva clase puede tener nuevos métodos y propiedades, o bien puede sobreescribir los existentes, sesgún sea necsario. Como resultado tenemos una clase nueva, que además de por su propio tipo, puede ser identificada por el mismo que su "clase madre" aunque se comporte de manera diferente.
+La nueva clase puede tener nuevos métodos y propiedades, o bien puede sobreescribir los existentes, según sea necesario. Como resultado tenemos una clase nueva, que además de por su propio tipo, puede ser identificada por el mismo que su "clase madre" aunque se comporte de manera diferente.
 
-Retomamos la reflexión sobre el sistema de biblioteca. Resulta que ella no sólo hay libros, sino revistas, discos, películas y otros medios disponibles para los usuarios. Podríamos crear clases para cada tipo, pero ¿cómo asegurárnos de que todas van a poder responder a los métodos necesarios?. Examinando la cuestión nos damos cuenta de que todas ellas podrían ser "hijas" de una clase más general, una "superclase", que vamos a llamar "Media". De esta manera los libros serían Media, así como las revistas, los discos o las películas.
+Supongamos ahora, por ejemplo, que necesitamos describir un tipo de coche deportivo que puede alcanzar mayores velocidades y acelerar más.
+
+```php
+class SportsCar extends Vehicle
+{
+    protected $maxSpeed = 250;
+    
+    public function accelerate()
+    {
+        if ($this->speed < $this->maxSpeed) {
+            $this->speed += 2;
+        }
+    }
+    
+    public function deccelerate()
+    {
+        if ($this->speed > 0) {
+            $this->speed -= 2;
+        } 
+    }
+}
+```
+
+En este caso, **sobreescribimos** en `SportsCar` los métodos y propiedades que necesitamos que se comporten de forma particular. Conceptualmente hacen lo mismo, sólo que de una manera propia.
+
+Retomamos la reflexión sobre el sistema de biblioteca. Resulta que en ella no sólo hay libros, sino revistas, discos, películas y otros medios disponibles para los usuarios. Podríamos crear clases para cada tipo, pero ¿cómo asegurarnos de que todas van a poder responder a los métodos necesarios?. Examinando la cuestión nos damos cuenta de que todas ellas podrían ser "hijas" de una clase más general, una "superclase", que vamos a llamar "Media". De esta manera los libros serían Media, así como las revistas, los discos o las películas.
 
 La clase Media podría aportar algunos métodos y propiedades comunes, y cada clase descendiente realizar algunas cosas de manera un poco diferente. Por ejemplo, los libros se suelen identificar con autor y título, las revistas por título y número, las películas por título, etc.
 
@@ -74,7 +148,7 @@ Por otro lado, las jerarquías de clases deberían cumplir el principio de susti
 
 ## Interfaces
 
-La herencia como forma de extender objetos tiene varios problemas y limitaciones. Al prinicpio parece una prestación espectacular, pero intentar resolver todas las necesidades de polimorfismo con Herencia nos lleva a meternos en muchos líos.
+La herencia como forma de extender objetos tiene varios problemas y limitaciones. Al principio parece una prestación espectacular, pero intentar resolver todas las necesidades de polimorfismo con Herencia nos lleva a meternos en muchos líos.
 
 Por ejemplo, podemos empezar a desear que una clase pueda heredar de varias otras simultáneamente. O también podríamos querer que una clase descienda de otra determinada sólo para poder pasarla a un método y que supere el type hinting. Este uso de la herencia acaba violando varios de los principios SOLID, en especial el de Liskov y el de segregación de interfaces.
 
@@ -94,13 +168,15 @@ Es más, en unos casos el objeto podría escribir el mensaje a un archivo, otro 
 
 Para indicar que una clase implementa una interfaz la declaramos asi:
 
-	class Example implemente Interface {}
-	
+```php
 	class Emailer implements Loggable {}
-	
+```
+
 Si se implementan varias interfaces ser haría así, por ejemplo, para que la clase Emailer implemente dos hipotéticas interfaces Loggable y Service:
 
+```php
 	class Emailer implements Loggable, Service {}
+```
 
 Por otra parte, en el código de ejemplo tenemos una clase `Logger` que puede registrar objetos de tipo `Loggable` y que se encargará de actualizar los logs en una sola pasada. Para ello, sabe que los objetos registrados tendrán un método `write()` para escribir sus mensajes, sin preocuparse para nada de cuántos mensajes o de qué archivo concreto debe ser modificado. De este modo, podemos registrar tantos objetos `Loggable` como nuestra aplicación necesite. 
 
