@@ -16,13 +16,13 @@ Un caso típico en PHP es el acceso a la base de datos, para lo que es habitual 
 
 Los elementos del patrón sería:
 
-* Fachada: la clase que encapsula. Utilza el Sistema encapsulado para realizar su tarea.
+* Fachada: la clase que encapsula. Utiliza el Sistema encapsulado para realizar su tarea.
 * Sistema encapsulado: una librería, una clase compleja, una colección de clases relacionadas, etc. No sabe nada de la fachada.
 * Usuarios: el código usuario de la Fachada y que quiere usar el sistema encapsulado. Conoce la interfaz de Fachada, y no sabe nada del sistema encapsulado.
 
 Las Fachadas nos ayudan en varios aspectos:
 
 * Reducen la complejidad del código al delegar en un objeto especializado llamadas complejas al sistema encapsulado.
-* Mejoran la mantenibilidad al centralizar en un sólo lugar código que puede ser utilzado muchas veces.
+* Mejoran la mantenibilidad al centralizar en un solo lugar código que puede ser utilzado muchas veces.
 * Reduce la complejidad de las dependencias, al confinarlas a una clase, lo que, a su vez, permite cambiarlas fácilmente reescribiendo la fachada (que es la base del patrón Adaptador). Aunque la fachada está fuertemente acoplada al sistema encapsulado, pero de ese modo desacopla el resto de la aplicación.
 * Nos permite crear puntos de entrada entre capas o subsistemas.
